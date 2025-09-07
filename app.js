@@ -69,8 +69,10 @@ const queries = (action) => {
   }
 
   if (action === "3") {
-    console.log("Let's update a customer!")
+    console.log("Let's update a customer!");
 
+
+    //this isn't working- user won't know what ID to input to update
     const getAllCustomers = async () => {
       const allCustomers = await Customer.find({});
       console.log(allCustomers);
@@ -78,33 +80,54 @@ const queries = (action) => {
 
     getAllCustomers();
 
-
-
-
     const updateCustomer = async (customerId, newName, newAge) => {
-
-      const customerById = prompt("From the list above, what is the ID of the customer you would like to update? ")
+      const customerById = prompt(
+        "From the list above, what is the ID of the customer you would like to update? "
+      );
 
       let newCustomerName = prompt("What is the customer's new name? ");
       let newCustomerAge = prompt("What is the customer's new age? ");
-  
+
       // const customerToUpdate = Customer.findById(customerId);
 
-
-      const customerUpdated = await Customer.findByIdAndUpdate(customerById, 
-        {name: newCustomerName,
-          age: newCustomerAge
-        }
-      )
+      const customerUpdated = await Customer.findByIdAndUpdate(customerById, {
+        name: newCustomerName,
+        age: newCustomerAge,
+      });
 
       return customerUpdated;
-    }
+    };
 
     updateCustomer();
-    console.log("This customer has been updated!")
-   
+    console.log("This customer has been updated!");
+  }
 
-     }
+  if (action === "4") {
+    console.log("Let's remove a customer!");
+
+    //this isn't working- user won't know what ID to insert to remove a customer
+    const getAllCustomers = async () => {
+      const allCustomers = await Customer.find({});
+      console.log(allCustomers);
+      getAllCustomers();
+    };
+
+   const customerDelete = async () => {
+    let customerID = prompt("From the list above, what is the ID of the customer you would like to remove?");
+    await Customer.findByIdAndDelete(customerId);
+   };
+
+   customerDelete();
+
+   console.log("Customer successfully removed!")
+   main();
+  }
+
+  if (action === "5") {
+    console.log("exiting...");
+    mongoose.connection.close();
+  }
+
 
 };
 main();
