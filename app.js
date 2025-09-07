@@ -1,13 +1,7 @@
-// check to make sure prompt-sync is connected
-// const prompt = require('prompt-sync')();
-
 const mongoose = require("mongoose");
 const db = require("./db/connection.js");
 const Customer = require("./models/customer.js");
 const prompt = require("prompt-sync")();
-
-// const username = prompt('What is your name? ');
-// console.log(`Your name is ${username}`);
 
 db();
 
@@ -71,16 +65,10 @@ const queries = (action) => {
   if (action === "3") {
     console.log("Let's update a customer!");
 
-
-    //this isn't working- user won't know what ID to input to update
-    const getAllCustomers = async () => {
+    const updateCustomer = async () => {
       const allCustomers = await Customer.find({});
       console.log(allCustomers);
-    };
 
-    getAllCustomers();
-
-    const updateCustomer = async (customerId, newName, newAge) => {
       const customerById = prompt(
         "From the list above, what is the ID of the customer you would like to update? "
       );
@@ -88,46 +76,41 @@ const queries = (action) => {
       let newCustomerName = prompt("What is the customer's new name? ");
       let newCustomerAge = prompt("What is the customer's new age? ");
 
-      // const customerToUpdate = Customer.findById(customerId);
-
       const customerUpdated = await Customer.findByIdAndUpdate(customerById, {
         name: newCustomerName,
         age: newCustomerAge,
       });
 
+      console.log("This customer has been updated!");
+      main();
       return customerUpdated;
     };
 
     updateCustomer();
-    console.log("This customer has been updated!");
   }
 
   if (action === "4") {
     console.log("Let's remove a customer!");
 
-    //this isn't working- user won't know what ID to insert to remove a customer
-    const getAllCustomers = async () => {
-      const allCustomers = await Customer.find({});
-      console.log(allCustomers);
-      getAllCustomers();
-    };
-
    const customerDelete = async () => {
-    let customerID = prompt("From the list above, what is the ID of the customer you would like to remove?");
+    const allCustomers = await Customer.find({});
+    console.log(allCustomers);
+
+    let customerId = prompt("From the list above, what is the ID of the customer you would like to remove? ");
     await Customer.findByIdAndDelete(customerId);
+
+    console.log("Customer successfully removed!")
+    main();
    };
 
    customerDelete();
-
-   console.log("Customer successfully removed!")
-   main();
   }
 
   if (action === "5") {
     console.log("exiting...");
     mongoose.connection.close();
   }
-
-
+  
 };
+
 main();
